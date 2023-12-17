@@ -228,8 +228,8 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 
-[Android]: https://img.shields.io/badge/swiftui-696969?style=for-the-badge&logo=swiftui&logoColor=white
-[Android-url]: https://developer.apple.com/xcode/swiftui/
+[Android]: https://img.shields.io/badge/android-696969?style=for-the-badge&logo=android&logoColor=white
+[Android-url]: https://developer.apple.com/xcode/android/
 
 [Medium]: https://img.shields.io/badge/medium-696969?style=for-the-badge&logo=medium&logoColor=white
 [Medium-url]: https://medium.com/@mobileappsacademy
