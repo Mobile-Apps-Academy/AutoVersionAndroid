@@ -1,0 +1,88 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.mobileappsacademy.autoincrement'
+    compileSdk 34
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def variantName = variant.name
+            def versionName = variant.versionName
+            def formattedDate = new Date().format('dd-MM-YYYY')
+            outputFileName = "Auto Increment Demo ${variantName}_Date_${formattedDate}_v${versionName}.apk"
+        }
+    }
+
+    def _versionCode=0
+    def _major=0
+    def _minor=0
+    def _patch=0
+
+    def versionPropsFile = file('version.properties')
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        _patch = versionProps['PATCH'].toInteger() + 1
+        _major = versionProps['MAJOR'].toInteger()
+        _minor = versionProps['MINOR'].toInteger()
+        _versionCode= versionProps['VERSION_CODE'].toInteger()+1
+
+        if(_patch==100) {
+            _patch=0
+            _minor=_minor+1
+        }
+        if(_minor == 10){
+            _minor = 0
+            _major =_major + 1
+        }
+
+        versionProps['MAJOR']=_major.toString()
+        versionProps['MINOR']=_minor.toString()
+        versionProps['PATCH']=_patch.toString()
+        versionProps['VERSION_CODE']=_versionCode.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+    }
+    else {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    def _versionName = "${_major}.${_minor}.${_patch}(${_versionCode})"
+
+
+
+    defaultConfig {
+        applicationId "com.mobileappsacademy.autoincrement"
+        minSdk 24
+        targetSdk 33
+        versionCode _versionCode
+        versionName _versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
